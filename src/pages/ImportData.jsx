@@ -454,7 +454,7 @@ export default function ImportData() {
         return;
       }
 
-      const response = await fetch(`${API_URL}/files/files`, {
+      const response = await fetch(`${API_URL}/files/upload`, {
         headers: headers
       });
       
