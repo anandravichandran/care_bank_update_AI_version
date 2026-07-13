@@ -506,7 +506,7 @@ export default function ImportData() {
       
       // Handle response
       const response = await new Promise((resolve, reject) => {
-        xhr.open('POST', `${API_URL}/files/upload`, true);
+        xhr.open('POST', `${API_URL}/files/files`, true);
         xhr.setRequestHeader('Authorization', `Bearer ${authToken}`);
         
         xhr.onload = () => {
