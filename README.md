@@ -1,4 +1,4 @@
-# VEGA — Financial Intelligence Console
+# CAREBANK — Financial Intelligence Console
 
 A premium, dark HUD-styled React frontend: sign up / sign in, a subscription
 tier picker, CSV transaction import, and a centerpiece AI chat console
