@@ -29,7 +29,7 @@ export default function SignUp() {
   // Check if email exists
   const checkEmailAvailability = async (email) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/check-email`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/check-email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
