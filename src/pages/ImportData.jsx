@@ -370,11 +370,7 @@ import { UploadCloud, FileText, CheckCircle2, XCircle, Trash2, Filter, ArrowUpDo
 import Panel from "../components/Panel";
 import JarvisCore from "../components/JarvisCore";
 import { useData } from "../context/DataContext";
-
-// Get API URL from environment or use default
-const API_URL = import.meta.env?.VITE_API_BASE_URL || 
-                // process.env?.REACT_APP_API_URL || 
-                'http://localhost:5000/api';
+import { API_BASE_URL } from "../config/api";
 
 const SAMPLE_CSV = `date,description,category,amount,status
 2026-06-01,Client payment - Nimbus Co,Revenue,4200,success
@@ -454,7 +450,7 @@ export default function ImportData() {
         return;
       }
 
-      const response = await fetch(`${API_URL}/files/upload`, {
+      const response = await fetch(`${API_BASE_URL}/files/upload`, {
         headers: headers
       });
       
@@ -506,7 +502,7 @@ export default function ImportData() {
       
       // Handle response
       const response = await new Promise((resolve, reject) => {
-        xhr.open('POST', `${API_URL}/files/files`, true);
+        xhr.open('POST', `${API_BASE_URL}/files/files`, true);
         xhr.setRequestHeader('Authorization', `Bearer ${authToken}`);
         
         xhr.onload = () => {
@@ -587,7 +583,7 @@ export default function ImportData() {
         return;
       }
 
-      const response = await fetch(`${API_URL}/ai/analyze/${fileId}`, {
+      const response = await fetch(`${API_BASE_URL}/ai/analyze/${fileId}`, {
         headers: headers
       });
       

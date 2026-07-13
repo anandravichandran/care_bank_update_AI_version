@@ -1276,7 +1276,7 @@ body::before{
 // ══════════════════════════════════════════════
 // CONFIG
 // ══════════════════════════════════════════════
-const API = 'https://carebankhost-1.onrender.com/api';
+const API = 'https://care-bank-host-backend-deployment.vercel.app/api';
 
 // ══════════════════════════════════════════════
 // STATE (in-memory only)
@@ -1364,7 +1364,7 @@ async function doLogin() {
   if (!email || !pass) { showAlert('authAlert','Please enter email and password','error'); return; }
   showAlert('authAlert','🔐 Logging in...','info');
   try {
-    const res = await apiPost('/auth/login', { email, password: pass });
+    const res = await apiPost('/signin/login', { email, password: pass });
     if (res.success) {
       state.token = res.token;
       state.user  = res.user;
@@ -1389,7 +1389,7 @@ async function doRegister() {
   if (pass !== pass2)            { showAlert('authAlert','Passwords do not match','error'); return; }
   showAlert('authAlert','📝 Creating account...','info');
   try {
-    const res = await apiPost('/auth/register', { name, email, password: pass });
+    const res = await apiPost('/signin/register', { name, email, password: pass });
     if (res.success) {
       state.token = res.token;
       state.user  = res.user;
@@ -1488,7 +1488,7 @@ async function doLogout() {
     if (diff > 0) msg += `\n📅 ${diff} day(s) remaining on ${state.plan.name}.`;
   }
   if (!confirm(msg)) return;
-  try { await apiPost('/auth/logout', {}); } catch(e) {}
+  try { await apiPost('/signin/logout', {}); } catch(e) {}
   state.token = null; state.user = null; state.plan = null;
   state.transactions = []; state.selectedPlan = null;
   state.modalSelectedPlan = null; state.pendingCouponPlan = null;
@@ -3888,7 +3888,7 @@ async function completeRegistration() {
   const { name, email, password } = pendingRegistrationData;
   
   try {
-    const res = await apiPost('/auth/register', { name, email, password });
+    const res = await apiPost('/signin/register', { name, email, password });
     
     if (res.success) {
       state.token = res.token;

@@ -3,9 +3,7 @@ import { Send, Mic, MicOff, Wallet, TrendingUp, Target, Sparkles } from "lucide-
 import JarvisCore from "../components/JarvisCore";
 import Panel from "../components/Panel";
 import { useData } from "../context/DataContext";
-
-// API URL from environment
-const API_URL = import.meta.env?.VITE_API_BASE_URL;
+import { API_BASE_URL } from "../config/api";
 
 const MOOD_LABEL = {
   idle: "STANDING BY",
@@ -321,7 +319,7 @@ async function sendToAI(userMessage) {
   // 4. If still no userId, fetch from backend
   if (!userId) {
     try {
-      const response = await fetch(`${API_URL}/auth/me`, {
+      const response = await fetch(`${API_BASE_URL}/user/me`, {
         headers: {
           'Authorization': `Bearer ${authToken}`
         }
@@ -349,7 +347,7 @@ async function sendToAI(userMessage) {
   const currentAgent = AGENTS[selectedAgent];
   
   // Determine which endpoint to use
-  const apiUrl = `${API_URL}${currentAgent.endpoint}`;
+  const apiUrl = `${API_BASE_URL}${currentAgent.endpoint}`;
   const requestBody = {
     user_id: userId,
     question: userMessage
