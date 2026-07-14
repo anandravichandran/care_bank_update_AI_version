@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Check } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import Panel from "../components/Panel";
-import { API_BASE_URL } from "../config/api";
 
 const PLANS = [
   {
@@ -71,7 +70,7 @@ export default function Subscription({ embedded = false }) {
         throw new Error("Authentication required. Please sign in again.");
       }
 
-      const response = await fetch(`${API_BASE_URL}/subscription`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/subscription`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -163,7 +162,7 @@ export default function Subscription({ embedded = false }) {
     try {
       const token = localStorage.getItem("authToken");
       
-      const verifyResponse = await fetch(`${API_BASE_URL}/payments/verify`, {
+      const verifyResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL}/payments/verify`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -212,7 +211,7 @@ export default function Subscription({ embedded = false }) {
       const token = localStorage.getItem("authToken");
       
       // FIXED: Send planKey consistently
-      const orderResponse = await fetch(`${API_BASE_URL}/payments/create-order`, {
+      const orderResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL}/payments/create-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

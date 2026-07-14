@@ -3,8 +3,8 @@ function joinUrl(base, path) {
   return path.startsWith('/') ? `${trimmed}${path}` : `${trimmed}/${path}`;
 }
 
-const AUTH_API_URL = import.meta.env.VITE_API_URL || 'https://care-bank-host-backend-deployment.vercel.app/api/signin';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://care-bank-host-backend-deployment.vercel.app/api';
+const AUTH_API_URL = import.meta.env.VITE_API_URL || 'https://carebankhost-1.onrender.com/api/auth';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://carebankhost-1.onrender.com/api';
 
 async function safeFetchJson(url, options = {}) {
   const response = await fetch(url, options);

@@ -4,7 +4,6 @@ import { ArrowRight, X, Check, Mail, AlertCircle } from "lucide-react";
 import Logo from "../components/Logo";
 import JarvisCore from "../components/JarvisCore";
 import { useAuth } from "../context/AuthContext";
-import { authApi } from "../config/api";
 
 export default function SignUp() {
   const { signUp } = useAuth();
@@ -30,7 +29,16 @@ export default function SignUp() {
   // Check if email exists
   const checkEmailAvailability = async (email) => {
     try {
-      const data = await authApi.post('/check-email', { email });
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/check-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+      
+      const data = await response.json();
+      console.log("Email check response:", data);
       return data.exists || false;
     } catch (err) {
       console.error("Error checking email:", err);
@@ -41,7 +49,23 @@ export default function SignUp() {
   // Send OTP via API
   const sendOTPToEmail = async (email) => {
     try {
-      const data = await authApi.post('/send-otp', { email });
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/send-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      console.log("Send OTP response status:", response.status);
+      const data = await response.json();
+      console.log("Send OTP response data:", data);
+
+      if (!response.ok) {
+        // Use the actual error message from server
+        throw new Error(data.message || data.error || "Failed to send OTP");
+      }
+
       return { ok: true, data };
     } catch (err) {
       console.error("Error sending OTP:", err);
@@ -52,7 +76,20 @@ export default function SignUp() {
   // Verify OTP via API
   const verifyOTPWithAPI = async (email, otpCode) => {
     try {
-      const data = await authApi.post('/verify-otp', { email, otp: otpCode });
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/verify-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, otp: otpCode }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || data.error || "Invalid OTP");
+      }
+
       return { ok: true, data };
     } catch (err) {
       return { ok: false, error: err.message };
@@ -62,7 +99,20 @@ export default function SignUp() {
   // Register user via API
   const registerUser = async (userData) => {
     try {
-      const data = await authApi.post('/register', userData);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || data.error || "Registration failed");
+      }
+
       return { ok: true, data };
     } catch (err) {
       return { ok: false, error: err.message };

@@ -3,7 +3,9 @@ import { Send, Mic, MicOff, Wallet, TrendingUp, Target, Sparkles } from "lucide-
 import JarvisCore from "../components/JarvisCore";
 import Panel from "../components/Panel";
 import { useData } from "../context/DataContext";
-import { API_BASE_URL } from "../config/api";
+
+// API URL from environment
+const API_URL = import.meta.env?.VITE_API_BASE_URL;
 
 const MOOD_LABEL = {
   idle: "STANDING BY",
@@ -272,8 +274,7 @@ export default function SmartBudgeting() {
     }, 14);
   }
 
-  // Send chat to AI backend
-async function sendToAI(userMessage) {
+ async function sendToAI(userMessage) {
   const authToken = getAuthToken();
   
   if (!authToken) {
@@ -319,7 +320,7 @@ async function sendToAI(userMessage) {
   // 4. If still no userId, fetch from backend
   if (!userId) {
     try {
-      const response = await fetch(`${API_BASE_URL}/user/me`, {
+      const response = await fetch(`${API_URL}/auth/me`, {
         headers: {
           'Authorization': `Bearer ${authToken}`
         }
@@ -347,7 +348,7 @@ async function sendToAI(userMessage) {
   const currentAgent = AGENTS[selectedAgent];
   
   // Determine which endpoint to use
-  const apiUrl = `${API_BASE_URL}${currentAgent.endpoint}`;
+  const apiUrl = `${API_URL}${currentAgent.endpoint}`;
   const requestBody = {
     user_id: userId,
     question: userMessage
@@ -418,6 +419,7 @@ async function sendToAI(userMessage) {
     return { text: fallbackText, mood: fallbackReply.mood || "concerned" };
   }
 }
+
 
   async function handleSend(e) {
     e?.preventDefault();
