@@ -1,3 +1,8 @@
+function joinUrl(base, path) {
+  const trimmed = base.replace(/\/+$/, '');
+  return path.startsWith('/') ? `${trimmed}${path}` : `${trimmed}/${path}`;
+}
+
 const AUTH_API_URL = import.meta.env.VITE_API_URL || 'https://care-bank-host-backend-deployment.vercel.app/api/signin';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://care-bank-host-backend-deployment.vercel.app/api';
 
@@ -18,7 +23,7 @@ async function safeFetchJson(url, options = {}) {
 }
 
 async function apiPost(path, body) {
-  return safeFetchJson(`${API_BASE_URL}${path}`, {
+  return safeFetchJson(joinUrl(API_BASE_URL, path), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
@@ -26,11 +31,11 @@ async function apiPost(path, body) {
 }
 
 async function apiGet(path) {
-  return safeFetchJson(`${API_BASE_URL}${path}`);
+  return safeFetchJson(joinUrl(API_BASE_URL, path));
 }
 
 async function apiUpload(path, formData) {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const response = await fetch(joinUrl(API_BASE_URL, path), {
     method: 'POST',
     body: formData,
   });
@@ -49,7 +54,7 @@ async function apiUpload(path, formData) {
 }
 
 async function authPost(path, body) {
-  return safeFetchJson(`${AUTH_API_URL}${path}`, {
+  return safeFetchJson(joinUrl(AUTH_API_URL, path), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
