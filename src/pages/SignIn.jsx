@@ -133,7 +133,6 @@ import { ArrowRight } from "lucide-react";
 import Logo from "../components/Logo";
 import JarvisCore from "../components/JarvisCore";
 import { useAuth } from "../context/AuthContext";
-import { authApi } from "../config/api";
 
 export default function SignIn() {
   const { signIn } = useAuth();
@@ -150,7 +149,19 @@ export default function SignIn() {
     setIsLoading(true);
 
     try {
-      const data = await authApi.post('/login', form);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Login failed");
+      }
 
       console.log("Login successful:", data);
 
